@@ -27,17 +27,17 @@ The inspected tooling is Ruff 0.16.6 and mypy 1.20.2. Runtime and development de
 
 ## Required Acceptance Checks
 
-Final local gates, Python 3.12.10:
+Final local gates, Python 3.12.10, after the release-gate hardening:
 
 ```text
 python -m pytest -q
-562 passed, 1 warning in 50.12s
+614 passed, 1 warning in 76.82s
 
 python -m ruff check .
 All checks passed!
 
 python -m mypy app
-Success: no issues found in 15 source files
+Success: no issues found in 16 source files
 
 python -m pip check
 No broken requirements found.
@@ -46,18 +46,20 @@ python tools/secret_scan.py
 (exit 0, no findings)
 
 python -m tools.local_smoke
-(exit 0; 5 MCP tools; REST/MCP hash-equivalent UNPROVEN synthetic report)
+(exit 0; 6 MCP tools including primary evaluate_strategy_release; REST/MCP hash-equivalent UNPROVEN synthetic report)
 ```
 
-There were zero failures and zero skips. The warning is Starlette's use of AnyIO's deprecated BlockingPortal alias; it is not suppressed. Quantitative unchanged-fixture results are recorded in [DEMO](DEMO.md). Full smoke evidence and its reproduction command are in [LOCAL-VERIFICATION](LOCAL-VERIFICATION.md).
+The release-gate upgrade adds `POST /v1/release-gate`, `GET /v1/release-gate/demo/{mixed,shock}`, MCP `evaluate_strategy_release` (primary, `readOnlyHint=true`), and the `app/release_gate.py` projection. Successful gate results are only issued from a source certificate accepted by the existing `verify_report` (`source_report_verified:true`); invalid sources fail closed with sanitized `REPORT_VERIFICATION_FAILED`. Verification replays the bounded reference/reconciliation calculations, so a gate call costs roughly one challenge plus one verification replay. Existing five tools and report verification remain authoritative and backward compatible. Synthetic demos remain `INSUFFICIENT_EVIDENCE`; `SURVIVED_BOUNDED_TESTS` is not deployment approval. See [agent call contract](AGENT-CALL-CONTRACT.md).
+
+There were zero failures and zero skips in the final run. The warning is Starlette's use of AnyIO's deprecated BlockingPortal alias; it is not suppressed. Quantitative unchanged-fixture results recorded 2026-09-19 are historical and kept in [DEMO](DEMO.md). Full smoke evidence and its reproduction command are in [LOCAL-VERIFICATION](LOCAL-VERIFICATION.md). Smoke verifier artifacts are written only under the run's temporary directory, so a fresh clone with no ignored `reports/` directory passes.
 
 `python -m pip_audit -r requirements.txt` is unavailable in the application environment (`No module named pip_audit`). The isolated release tooling environment (`tools/__pycache__/release-venv`, pip-audit 2.10.1) reported **no known vulnerabilities** for `requirements.txt`. That audit queries vulnerability services for locked third-party packages only; it is not a Nexus, deployment, or application-security certification.
 
 Local health service and proof slug both returned `alpha-litmus`. The source reads only `ALPHALITMUS_COMMIT`, without a legacy fallback. Development reported `local-dev`, not an actual public review commit. Body handling is capped at 4,000,000 bytes, eight intake slots, a 10-second body deadline and two compute slots per process; `GET /health` bypasses upload intake and compute admission and never waits for body input.
 
-A real local MCP stdio subprocess client discovered all five tools and obtained the full mixed demo report. Its hash matched REST exactly. A separate Uvicorn subprocess served health over loopback TCP with HTTP 200. The offline verifier exited 0 for the valid exported report and 1 for its tampered counterpart. Provenance rejects `commit_reviewable=true` with `commit="abc123"` at generation, REST, MCP, and offline-verifier layers. These are local process/transport checks, not an external MCP host or public deployment.
+A real local MCP stdio subprocess client discovered all six tools (including primary `evaluate_strategy_release`) and obtained the full mixed demo report. Its hash matched REST exactly. A separate Uvicorn subprocess served health over loopback TCP with HTTP 200. The offline verifier exited 0 for the valid exported report and 1 for its tampered counterpart. Provenance rejects `commit_reviewable=true` with `commit="abc123"` at generation, REST, MCP, and offline-verifier layers. These are local process/transport checks, not an external MCP host or public deployment.
 
-A real Chrome pass on 2026-09-19 rendered the dashboard, exercised the mixed-to-shock demo transition, checked the semantic control/table structure, and verified a 390px viewport without document-level horizontal overflow. No application-origin console errors were observed. This is a bounded visual/responsive review, not formal accessibility conformance or broad cross-browser coverage.
+A real Chrome pass on 2026-09-19 (historical, pre-redesign) rendered the previous dashboard, exercised the mixed-to-shock demo transition, checked the semantic control/table structure, and verified a 390px viewport without document-level horizontal overflow. The redesigned release-gate UI has not received a current browser pass: responsive verification for the new gate-first layout is static/TestClient only (viewport meta, overflow guards, collapsing grids, decision-first ordering), with dashboard JavaScript syntax checked via Node. No current browser pass, formal accessibility conformance, or broad cross-browser coverage is claimed.
 
 The Windows Docker daemon remained unavailable, but the authorized target Linux
 VPS subsequently built the image from the same Dockerfile and hash-locked runtime
@@ -68,7 +70,7 @@ limits and no host port. Nexus remained disabled and no key was deployed. See
 final reviewed-commit binding remains pending.
 
 - [x] Final source imports, tests, lint and strict types pass with recorded exact commands/environment.
-- [x] REST OpenAPI and MCP `tools/list` match README request nesting, field domains and five tool names.
+- [x] REST OpenAPI and MCP `tools/list` match README request nesting, field domains and six tool names (primary `evaluate_strategy_release` plus the existing five).
 - [x] Synthetic examples cannot receive an eligible survival verdict; missing Nexus evidence remains unproven.
 - [x] A certificate verifies offline; both an ordinary tamper and a rehashed inconsistent analysis fail verification.
 - [x] Provenance contract enforced: reviewable requires nonzero lowercase 40-hex, unreviewable permits only `local-dev`; the rehashed `abc123` claim is rejected by generation, REST, MCP, and the offline verifier.
