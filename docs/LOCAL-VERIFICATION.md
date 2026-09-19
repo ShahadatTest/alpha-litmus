@@ -77,7 +77,7 @@ Hashes establish internal integrity, not source authenticity. Creation time is e
 - Window-compute tests (`tests/test_nexus_compute.py`, `tests/test_compute_api.py`) use mocked transports with synthetic/documentation-derived fixtures and assert zero network calls on disabled/unconfirmed paths. No live Nexus request was made by the application test suite.
 - Mocked upstream tests cover redaction, timeout, malformed envelopes, duplicate keys, streamed size limits, and cancellation propagation. No live Nexus request is required.
 - Dashboard JavaScript was checked using actual demo/reconciliation reports in a Node DOM stub, including stale-request races and error/export behavior.
-- A real Chrome review on 2026-09-19 (historical, pre-redesign) loaded the loopback dashboard and mixed fixture over HTTP 200, rendered the desktop judge workspace, exercised the shock-demo transition, and found no application-origin console errors with a bounded 390px viewport. The redesigned release-gate UI has no current browser pass: verification is static/TestClient only (viewport meta, overflow guards, collapsing gate grid, decision-first ordering, copy/download controls) plus a Node syntax check of the dashboard script. No current browser pass, formal WCAG conformance, or cross-browser certification is claimed.
+- A current Chromium review on 2026-09-19 loaded the redesigned dashboard from the public HTTPS deployment. The mixed release-gate demo reached `INSUFFICIENT_EVIDENCE`; the shock transition completed with `COLLECT_MORE_EVIDENCE`, enabled Copy/Download controls, and retained the exact-true source verification boundary. Desktop and 390×844 mobile measurements showed no document-level horizontal overflow, and the browser recorded no application console warning/error. This is one Chromium-family pass, not formal WCAG conformance or cross-browser certification.
 - Existing negative historical reports remain unchanged. The default synthetic demos already fail at baseline; no positive-to-negative showcase was fabricated or tuned.
 
 ## Local Docker Blocker and VPS Execution
@@ -106,8 +106,8 @@ No known vulnerabilities found
 
 This covers locked third-party packages only, not application, deployment, or Nexus security.
 
-DNS, Caddy TLS and the hardened safe-mode container are verified. The remaining
-release steps are to publish the exact source commit, bind the deployment to that
-review commit, run the official offline/online submission validators and open the
-submission PR. Live Nexus review remains separate and must not be enabled
-publicly without authentication and quotas.
+DNS, Caddy TLS, the hardened safe-mode container, public source publication and
+reviewed-commit binding are verified. The remaining external release steps are
+to run the official offline/online submission validators and open the submission
+PR. Live Nexus review remains separate and must not be enabled publicly without
+authentication and quotas.

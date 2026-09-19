@@ -59,22 +59,22 @@ Local health service and proof slug both returned `alpha-litmus`. The source rea
 
 A real local MCP stdio subprocess client discovered all six tools (including primary `evaluate_strategy_release`) and obtained the full mixed demo report. Its hash matched REST exactly. A separate Uvicorn subprocess served health over loopback TCP with HTTP 200. The offline verifier exited 0 for the valid exported report and 1 for its tampered counterpart. Provenance rejects `commit_reviewable=true` with `commit="abc123"` at generation, REST, MCP, and offline-verifier layers. These are local process/transport checks, not an external MCP host or public deployment.
 
-A real Chrome pass on 2026-09-19 (historical, pre-redesign) rendered the previous dashboard, exercised the mixed-to-shock demo transition, checked the semantic control/table structure, and verified a 390px viewport without document-level horizontal overflow. The redesigned release-gate UI has not received a current browser pass: responsive verification for the new gate-first layout is static/TestClient only (viewport meta, overflow guards, collapsing grids, decision-first ordering), with dashboard JavaScript syntax checked via Node. No current browser pass, formal accessibility conformance, or broad cross-browser coverage is claimed.
+A current Chromium pass on 2026-09-19 exercised the redesigned gate-first dashboard over public HTTPS. The mixed demo auto-loaded, the shock transition reached `INSUFFICIENT_EVIDENCE` with `COLLECT_MORE_EVIDENCE`, Copy/Download controls enabled only after a verified result, desktop and 390×844 mobile layouts had no document-level horizontal overflow, and no application console warning/error was observed. Static/TestClient and Node syntax checks remain in place. This is not formal accessibility conformance or broad cross-browser coverage.
 
 The Windows Docker daemon remained unavailable, but the authorized target Linux
 VPS subsequently built the image from the same Dockerfile and hash-locked runtime
 requirements. The resulting container passed health as UID 10001 with a read-only
 root filesystem, dropped capabilities, no-new-privileges, explicit resource
 limits and no host port. Nexus remained disabled and no key was deployed. See
-[VPS deployment](VPS-DEPLOYMENT.md). Public DNS/TLS are verified there; only
-final reviewed-commit binding remains pending.
+[VPS deployment](VPS-DEPLOYMENT.md). Public DNS/TLS and the final public
+reviewed-commit binding are verified there.
 
 - [x] Final source imports, tests, lint and strict types pass with recorded exact commands/environment.
 - [x] REST OpenAPI and MCP `tools/list` match README request nesting, field domains and six tool names (primary `evaluate_strategy_release` plus the existing five).
 - [x] Synthetic examples cannot receive an eligible survival verdict; missing Nexus evidence remains unproven.
 - [x] A certificate verifies offline; both an ordinary tamper and a rehashed inconsistent analysis fail verification.
 - [x] Provenance contract enforced: reviewable requires nonzero lowercase 40-hex, unreviewable permits only `local-dev`; the rehashed `abc123` claim is rejected by generation, REST, MCP, and the offline verifier.
-- [ ] Production provenance rejects missing/invalid commit configuration; health and proof match an actual public reviewed commit.
+- [x] Production provenance rejects missing/invalid commit configuration; health and proof match the actual public reviewed commit.
 - [x] A real named Nexus strategy completed one Studio backtest and was left stopped; its negative metrics and limitations are recorded without a profitability claim.
 - [x] With explicit authorization and an in-memory strategy-bound key, AlphaLitmus consumed all four read-only Nexus MCP evidence surfaces and correctly returned `INCONSISTENT` for a cross-instrument trade mismatch. The default remains disabled and secret-free.
 - [ ] The live window-compute path has not run. It retains its separate switch and per-request confirmation and is not required for the read-only reconciliation above.
@@ -83,10 +83,10 @@ final reviewed-commit binding remains pending.
 - [ ] Caller authentication, per-principal quotas and retention controls are exercised before enabling live Nexus access or remote compute.
 - [ ] Actual source/data/branding/dependency rights and official submission artifacts are completed by authorized owners.
 
-The healthy container is publicly reachable through verified HTTPS in safe mode.
-Final commit binding, official validator result, registration proof and rights
-clearance remain pending. No Git initialization, commit, push or submission is
-inferred. Legacy negative reports stay unchanged and labeled as described in
+The healthy container is publicly reachable through verified HTTPS in safe mode
+and bound to the public source commit. Official validator result, registration
+proof, submission and rights clearance remain pending. Legacy negative reports
+stay unchanged and labeled as described in
 [BASELINE](BASELINE.md).
 
 ## Remaining Limits
@@ -96,4 +96,4 @@ inferred. Legacy negative reports stay unchanged and labeled as described in
 - No PSR, deflated Sharpe or selection-adjusted significance. Caller-declared variant counts do not repair selection bias; IID bootstrap and the 30-trade floor do not establish independence or future profit.
 - No global multidimensional failure minimum. Cost/delay/EMA results are bounded grids and per-dimension discoveries, not a search over all joint perturbations.
 - No selective sample exclusion to improve a result. Any out-of-domain bootstrap draw makes all bootstrap quantiles unavailable while other analyses remain; any replay cumulative or individual trade log return outside [-100,100] makes the entire reference analysis unavailable. Missing profit factors are never treated as passes, and later observed failures remain visible without a false bracket.
-- No public source repository, official validator result, registration proof or final rights clearance yet. The public safe-mode deployment is intentionally unauthenticated because Nexus and remote compute are disabled; those capabilities must not be enabled without authentication and quotas.
+- The public source repository and matching safe-mode deployment exist, but there is no official validator result, registration proof, submission acceptance or final rights clearance yet. The public safe-mode deployment is intentionally unauthenticated because Nexus and remote compute are disabled; those capabilities must not be enabled without authentication and quotas.

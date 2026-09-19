@@ -149,14 +149,15 @@ Health service and deployment-proof slug are both `alpha-litmus`.
 `ALPHALITMUS_COMMIT` is the only commit environment variable; there is no legacy
 fallback. The local Windows daemon was unreachable, but the target Linux VPS
 subsequently built and ran the safe-mode image successfully with Nexus disabled.
-The public HTTPS edge is live; final reviewed-commit binding remains pending. See
-[VPS deployment](docs/VPS-DEPLOYMENT.md).
+The public HTTPS edge is live and the active safe-mode release is bound to the
+same 40-character public commit reported by `/health` and the well-known proof.
+See [VPS deployment](docs/VPS-DEPLOYMENT.md).
 
 ## Evidence Status
 
-A public safe-mode API and judge UI are deployed, but no profitable-strategy validation, public reviewed commit, rights clearance, registration proof, official validator success or contest acceptance is claimed. Real Studio runs and one callable read-only Nexus MCP snapshot exist; AlphaLitmus classified the candidate `INCONSISTENT` because its recent trades crossed instruments. Do not infer ownership or data-use rights from file availability.
+A public safe-mode API, judge UI, and source repository are available, but no profitable-strategy validation, rights clearance, registration proof, official validator success or contest acceptance is claimed. Real Studio runs and one callable read-only Nexus MCP snapshot exist; AlphaLitmus classified the candidate `INCONSISTENT` because its recent trades crossed instruments. Do not infer ownership or data-use rights from file availability.
 
-Dependency license metadata and the inventory document third-party evidence only. They do not grant a project license, establish project ownership, or clear source, data or branding rights. Current aggregate gate results (post-hardening local run, Python 3.12.10): 614 passed with 1 warning, Ruff clean, strict mypy clean (16 source files), `pip check` clean, secret scan exit 0, local smoke exit 0 (6 MCP tools; artifacts under the run's temporary directory), isolated pip-audit reporting no known vulnerabilities for `requirements.txt`, and a healthy hardened target-VPS container behind verified public HTTPS. Successful release-gate decisions require a verified source certificate; the redesigned UI has no current browser pass (static/TestClient verification only). Final reviewed-commit binding is not yet complete.
+Dependency license metadata and the inventory document third-party evidence only. They do not grant a project license, establish project ownership, or clear source, data or branding rights. Current aggregate gate results (post-hardening local run, Python 3.12.10): 614 passed with 1 warning, Ruff clean, strict mypy clean (16 source files), `pip check` clean, secret scan exit 0, local smoke exit 0 (6 MCP tools; artifacts under the run's temporary directory), isolated pip-audit reporting no known vulnerabilities for `requirements.txt`, and a healthy hardened target-VPS container behind verified public HTTPS. Successful release-gate decisions require a verified source certificate. The redesigned live UI received a current Chromium browser pass at desktop and 390×844 mobile viewports: mixed auto-load and shock transition completed, export controls enabled, no document-level horizontal overflow appeared, and no application console warning/error was observed. This is not formal accessibility or cross-browser certification. The active health and proof endpoints report the same public 40-character source commit.
 
 - [Demo](docs/DEMO.md): repeatable local presentation with negative and unavailable results.
 - [Methodology](docs/METHODOLOGY.md): exact formulas, thresholds, bootstrap assumptions and citations.
